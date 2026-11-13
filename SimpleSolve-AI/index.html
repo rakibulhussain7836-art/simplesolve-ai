@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SimpleSolve AI | Simple Questions. Smart Solutions.</title>
+  
+  <!-- Google Fonts: Plus Jakarta Sans for modern typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    
+    <!-- ========================================================
+         SIDEBAR NAVIGATION
+         ======================================================== -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Sidebar Header & Brand -->
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">SimpleSolve <span class="accent-text">AI</span></span>
+            <span class="brand-tag">v1.0 • Rule-Based</span>
+          </div>
+        </div>
+        <!-- Close button on mobile -->
+        <button class="icon-btn mobile-close-btn" id="closeSidebarBtn" title="Close Sidebar" aria-label="Close Sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- New Chat Action Button -->
+      <div class="sidebar-action">
+        <button class="btn btn-new-chat" id="newChatBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>New Chat</span>
+        </button>
+      </div>
+
+      <!-- Chat History Section -->
+      <div class="history-section">
+        <div class="section-title-wrap">
+          <span class="section-title">Chat History</span>
+          <span class="history-count" id="historyCount">0</span>
+        </div>
+        <div class="history-list" id="historyList">
+          <!-- Dynamically populated from localStorage -->
+        </div>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <div class="engine-badge">
+          <div class="status-indicator">
+            <span class="pulse-dot"></span>
+            <span class="status-label">Client Engine Online</span>
+          </div>
+          <p class="engine-desc">Safe Math Parser & Knowledge Base</p>
+        </div>
+
+        <button class="btn-clear-history" id="clearAllHistoryBtn" title="Clear all saved chats">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+          <span>Clear All History</span>
+        </button>
+
+        <div class="student-info">
+          <span>SimpleSolve AI • B.Tech AIML Project</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ========================================================
+         MAIN CHAT CONTAINER
+         ======================================================== -->
+    <main class="chat-main">
+      
+      <!-- Top Navigation Bar -->
+      <header class="top-nav">
+        <div class="nav-left">
+          <button class="icon-btn mobile-menu-btn" id="openSidebarBtn" title="Open Sidebar" aria-label="Open Sidebar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          
+          <div class="chat-header-title">
+            <h1 class="header-name">SimpleSolve AI</h1>
+            <div class="header-status">
+              <span class="status-dot"></span>
+              <span class="status-text">Online • Ready to solve</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-right">
+          <button class="nav-btn" id="aboutBtn" title="About SimpleSolve AI">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
+            <span class="btn-text">About Project</span>
+          </button>
+
+          <button class="nav-btn nav-btn-danger" id="clearChatBtn" title="Clear current chat messages">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span class="btn-text">Clear Chat</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Viewport (Scrollable) -->
+      <div class="chat-viewport" id="chatViewport">
+        
+        <!-- Welcome Screen (Visible when chat is fresh/empty) -->
+        <section class="welcome-screen" id="welcomeScreen">
+          <div class="welcome-badge">
+            <div class="badge-glow"></div>
+            <div class="badge-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+          </div>
+
+          <h2 class="welcome-title">SimpleSolve <span class="gradient-text">AI</span></h2>
+          <p class="welcome-tagline">Simple Questions. Smart Solutions.</p>
+
+          <!-- Disclaimer / Architecture Notice -->
+          <div class="architecture-notice">
+            <div class="notice-icon">💡</div>
+            <div class="notice-text">
+              <strong>College Project Architecture:</strong> This initial version is a specialized 
+              <em>Rule-Based AI Assistant</em> with a built-in safe math calculator (no eval), step-by-step problem solver, 
+              and student knowledge base. It is cleanly engineered for future generative AI API integration.
+            </div>
+          </div>
+
+          <!-- Suggested Questions Grid -->
+          <div class="suggestions-container">
+            <div class="suggestions-header">
+              <span>Try one of these suggested questions to get started:</span>
+            </div>
+
+            <div class="suggestions-grid">
+              
+              <!-- Math Card -->
+              <div class="suggestion-card" data-prompt="Calculate (45 * 12) + (180 / 6) - 25">
+                <div class="card-icon math-icon">🧮</div>
+                <div class="card-content">
+                  <div class="card-category">Mathematics</div>
+                  <div class="card-prompt">"Calculate (45 * 12) + (180 / 6) - 25"</div>
+                  <div class="card-sub">Step-by-step BODMAS arithmetic</div>
+                </div>
+              </div>
+
+              <!-- Percentage Card -->
+              <div class="suggestion-card" data-prompt="What is 18% of 2500?">
+                <div class="card-icon percent-icon">📊</div>
+                <div class="card-content">
+                  <div class="card-category">Percentage & Calculations</div>
+                  <div class="card-prompt">"What is 18% of 2500?"</div>
+                  <div class="card-sub">Percentage calculation with formula</div>
+                </div>
+              </div>
+
+              <!-- AI Concept Card -->
+              <div class="suggestion-card" data-prompt="What is the difference between Machine Learning and Deep Learning?">
+                <div class="card-icon ai-icon">🤖</div>
+                <div class="card-content">
+                  <div class="card-category">Artificial Intelligence</div>
+                  <div class="card-prompt">"ML vs Deep Learning"</div>
+                  <div class="card-sub">Clear comparison with real examples</div>
+                </div>
+              </div>
+
+              <!-- Overfitting Card -->
+              <div class="suggestion-card" data-prompt="Explain overfitting and how to prevent it in machine learning">
+                <div class="card-icon ml-icon">🧠</div>
+                <div class="card-content">
+                  <div class="card-category">AIML Concepts</div>
+                  <div class="card-prompt">"What is Overfitting & how to fix it?"</div>
+                  <div class="card-sub">Underfitting vs Overfitting explained</div>
+                </div>
+              </div>
+
+              <!-- Web Dev Card -->
+              <div class="suggestion-card" data-prompt="Explain CSS Flexbox vs Grid with an example">
+                <div class="card-icon web-icon">🎨</div>
+                <div class="card-content">
+                  <div class="card-category">Web Development</div>
+                  <div class="card-prompt">"CSS Flexbox vs CSS Grid"</div>
+                  <div class="card-sub">When to use which with code examples</div>
+                </div>
+              </div>
+
+              <!-- C++ OOP Card -->
+              <div class="suggestion-card" data-prompt="Explain OOP concepts in C++ with examples">
+                <div class="card-icon cpp-icon">💻</div>
+                <div class="card-content">
+                  <div class="card-category">C++ Programming</div>
+                  <div class="card-prompt">"Explain 4 pillars of OOP in C++"</div>
+                  <div class="card-sub">Encapsulation, Inheritance, Polymorphism</div>
+                </div>
+              </div>
+
+              <!-- Study Technique Card -->
+              <div class="suggestion-card" data-prompt="What is the Pomodoro technique and how can students use it?">
+                <div class="card-icon study-icon">⏱️</div>
+                <div class="card-content">
+                  <div class="card-category">Study Skills</div>
+                  <div class="card-prompt">"How does Pomodoro Technique work?"</div>
+                  <div class="card-sub">Time management for engineering exams</div>
+                </div>
+              </div>
+
+              <!-- Problem Solving Card -->
+              <div class="suggestion-card" data-prompt="How can I improve my problem solving and coding logic?">
+                <div class="card-icon logic-icon">🚀</div>
+                <div class="card-content">
+                  <div class="card-category">Everyday Problem Solving</div>
+                  <div class="card-prompt">"How to improve coding logic?"</div>
+                  <div class="card-sub">Actionable steps for students</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- Message Bubbles Container -->
+        <div class="messages-container" id="messagesContainer">
+          <!-- User and Bot Messages injected here via JavaScript -->
+        </div>
+
+        <!-- Typing Animation Indicator -->
+        <div class="typing-indicator" id="typingIndicator">
+          <div class="bot-avatar-small">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <div class="typing-bubble">
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+            <span class="typing-dot"></span>
+          </div>
+          <span class="typing-label">SimpleSolve AI is thinking...</span>
+        </div>
+
+      </div>
+
+      <!-- Chat Input Area (Fixed Bottom) -->
+      <footer class="chat-input-area">
+        
+        <!-- Quick Chip Prompts -->
+        <div class="quick-chips-wrapper">
+          <div class="quick-chips" id="quickChips">
+            <button class="chip" data-prompt="Calculate 128 * 16 + 256">🧮 128 * 16 + 256</button>
+            <button class="chip" data-prompt="What is Supervised Learning?">🤖 Supervised Learning</button>
+            <button class="chip" data-prompt="Difference between let, const and var in JavaScript">⚡ JS var vs let vs const</button>
+            <button class="chip" data-prompt="Square root of 625">📐 sqrt(625)</button>
+            <button class="chip" data-prompt="Tips to prepare for B.Tech semester exams">📚 Exam Prep Strategy</button>
+            <button class="chip" data-prompt="How do Neural Networks work?">🧠 Neural Networks</button>
+          </div>
+        </div>
+
+        <!-- Input Box Container -->
+        <div class="input-box-container">
+          <form class="input-form" id="chatForm">
+            <textarea 
+              id="userInput" 
+              class="user-input" 
+              placeholder="Ask a math calculation, coding question, or AI concept... (Press Enter to send)"
+              rows="1"
+              autocomplete="off"
+            ></textarea>
+            
+            <button type="submit" class="btn-send" id="sendBtn" title="Send message (Enter)" aria-label="Send message" disabled>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Bottom Disclaimer -->
+        <div class="input-disclaimer">
+          <span>SimpleSolve AI • Rule-Based Mini Project • Arithmetic solved safely client-side without eval()</span>
+        </div>
+
+      </footer>
+
+    </main>
+
+  </div>
+
+  <!-- ========================================================
+       ABOUT / INFO MODAL
+       ======================================================== -->
+  <div class="modal-backdrop" id="aboutModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="brand-icon small">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3>About SimpleSolve AI</h3>
+        </div>
+        <button class="icon-btn modal-close-btn" id="closeAboutModalBtn" aria-label="Close Modal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-badge-row">
+          <span class="badge blue">HTML5 + CSS3 + Vanilla JS</span>
+          <span class="badge purple">No Frameworks</span>
+          <span class="badge green">Safe Math Engine</span>
+          <span class="badge yellow">LocalStorage DB</span>
+        </div>
+
+        <h4>🎯 Project Overview</h4>
+        <p>
+          <strong>SimpleSolve AI</strong> is a beginner-friendly problem-solving chatbot website developed 
+          for students and everyday users. It offers instant step-by-step solutions for mathematics, 
+          programming explanations, AI/ML concepts, and study assistance.
+        </p>
+
+        <h4>⚙️ Core Engineering Features</h4>
+        <ul>
+          <li><strong>Zero eval() Safe Math:</strong> Evaluates mathematical expressions using a custom tokenizer and recursive arithmetic evaluator with full BODMAS order.</li>
+          <li><strong>Comprehensive Knowledge Base:</strong> Over 40+ curated problem domains across Mathematics, C++, HTML/CSS/JavaScript, Machine Learning, and Study Productivity.</li>
+          <li><strong>ChatGPT-Inspired UI:</strong> Dark navy & blue aesthetic, auto-resizing input, typing indicators, rounded bubbles, code formatting with one-click copy.</li>
+          <li><strong>LocalStorage Chat History:</strong> Supports multiple persistent chat sessions, switching chats, and deletion.</li>
+          <li><strong>API-Ready Architecture:</strong> Clean async design in <code>script.js</code> ready to integrate OpenAI or Google Gemini API.</li>
+        </ul>
+
+        <h4>👨‍💻 Academic Context</h4>
+        <p class="modal-note">
+          Designed as a complete, self-contained college mini-project for B.Tech AIML / CSE students. 
+          All code is pure vanilla JavaScript with zero external runtime dependencies.
+        </p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="confirmAboutBtn">Got it, Let's Chat!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Main JavaScript File -->
+  <script src="script.js"></script>
+</body>
+</html>
